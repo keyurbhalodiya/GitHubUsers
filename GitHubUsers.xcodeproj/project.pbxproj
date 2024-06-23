@@ -13,7 +13,7 @@
 		71D1C4602C28850900B778D2 /* GitHubUsersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D1C45F2C28850900B778D2 /* GitHubUsersTests.swift */; };
 		71D1C47E2C28855F00B778D2 /* GitUsers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D1C47D2C28855F00B778D2 /* GitUsers.swift */; };
 		71D1C4802C2885AA00B778D2 /* GitUserDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D1C47F2C2885AA00B778D2 /* GitUserDetails.swift */; };
-		71D1C4822C2885EA00B778D2 /* Dataprovider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D1C4812C2885EA00B778D2 /* Dataprovider.swift */; };
+		71D1C4822C2885EA00B778D2 /* DataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D1C4812C2885EA00B778D2 /* DataProvider.swift */; };
 		71D1C4842C2885F800B778D2 /* GitUsersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D1C4832C2885F800B778D2 /* GitUsersViewModel.swift */; };
 		71D1C4862C28860300B778D2 /* GitUserDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D1C4852C28860300B778D2 /* GitUserDetailsViewModel.swift */; };
 		71D1C4882C28861100B778D2 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D1C4872C28861100B778D2 /* NetworkService.swift */; };
@@ -41,7 +41,7 @@
 		71D1C46B2C28850A00B778D2 /* GitHubUsersUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubUsersUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		71D1C47D2C28855F00B778D2 /* GitUsers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitUsers.swift; sourceTree = "<group>"; };
 		71D1C47F2C2885AA00B778D2 /* GitUserDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitUserDetails.swift; sourceTree = "<group>"; };
-		71D1C4812C2885EA00B778D2 /* Dataprovider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dataprovider.swift; sourceTree = "<group>"; };
+		71D1C4812C2885EA00B778D2 /* DataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataProvider.swift; sourceTree = "<group>"; };
 		71D1C4832C2885F800B778D2 /* GitUsersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitUsersViewModel.swift; sourceTree = "<group>"; };
 		71D1C4852C28860300B778D2 /* GitUserDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitUserDetailsViewModel.swift; sourceTree = "<group>"; };
 		71D1C4872C28861100B778D2 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
@@ -90,7 +90,7 @@
 			children = (
 				71D1C47B2C28853900B778D2 /* View */,
 				71D1C4792C28853900B778D2 /* ViewModel */,
-				71D1C47C2C28853900B778D2 /* Dataprovider */,
+				71D1C47C2C28853900B778D2 /* DataProvider */,
 				71D1C4782C28853900B778D2 /* NetworkService */,
 				71D1C4892C28869E00B778D2 /* Model */,
 				71D1C47A2C28853900B778D2 /* Utility */,
@@ -159,12 +159,12 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		71D1C47C2C28853900B778D2 /* Dataprovider */ = {
+		71D1C47C2C28853900B778D2 /* DataProvider */ = {
 			isa = PBXGroup;
 			children = (
-				71D1C4812C2885EA00B778D2 /* Dataprovider.swift */,
+				71D1C4812C2885EA00B778D2 /* DataProvider.swift */,
 			);
-			path = Dataprovider;
+			path = DataProvider;
 			sourceTree = "<group>";
 		};
 		71D1C4892C28869E00B778D2 /* Model */ = {
@@ -279,7 +279,7 @@
 				71D1C44F2C28850800B778D2 /* GitHubUsersApp.swift in Sources */,
 				71D1C4842C2885F800B778D2 /* GitUsersViewModel.swift in Sources */,
 				71D1C4862C28860300B778D2 /* GitUserDetailsViewModel.swift in Sources */,
-				71D1C4822C2885EA00B778D2 /* Dataprovider.swift in Sources */,
+				71D1C4822C2885EA00B778D2 /* DataProvider.swift in Sources */,
 				71D1C47E2C28855F00B778D2 /* GitUsers.swift in Sources */,
 				71D1C4882C28861100B778D2 /* NetworkService.swift in Sources */,
 				71D1C48B2C2886B500B778D2 /* Model.swift in Sources */,
