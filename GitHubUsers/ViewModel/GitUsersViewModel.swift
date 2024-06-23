@@ -6,3 +6,9 @@
 //
 
 import Foundation
+
+final class GitUsersViewModel: GitUsersViewState {
+        
+  @Published var gitUsers: [User] = []
+
+}
