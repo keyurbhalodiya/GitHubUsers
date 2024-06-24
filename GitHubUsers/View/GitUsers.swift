@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 protocol GitUsersViewState: ObservableObject {
   var gitUsers: [User] { get set }
@@ -21,13 +22,23 @@ struct GitUsers<ViewModel: GitUsersViewState>: View {
   
   var body: some View {
     NavigationView {
-      List(viewModel.gitUsers, id: \.self) { user in
-        HStack {
-          Text(user.login ?? "")
-        }
-      }
+      rowContent
       .listStyle(.plain)
       .navigationTitle("GitHub Users")
+    }
+  }
+  
+  @ViewBuilder
+  var rowContent: some View {
+    List(viewModel.gitUsers, id: \.self) { user in
+      HStack {
+        WebImage(url: URL(string: user.avatarURL ?? ""))
+               .resizable()
+               .frame(width: 75, height: 75)
+               .clipShape(.circle)
+        Text(user.login ?? "")
+          .font(.system(size: 22))
+      }
     }
   }
 }
@@ -37,8 +48,8 @@ struct GitUsers<ViewModel: GitUsersViewState>: View {
 #if DEBUG
 private final class GitUsersViewModelMock: GitUsersViewState {
   var gitUsers: [User] = [
-    User(login: "User 1", id: 1, avatarURL: "https://avatarURL"),
-    User(login: "User 2", id: 2, avatarURL: "https://avatarURL")
+    User(login: "User 1", id: 1, avatarURL: "https://placehold.co/75x75/png"),
+    User(login: "User 2", id: 2, avatarURL: "https://placehold.co/75x75/png")
   ]
 
 }
