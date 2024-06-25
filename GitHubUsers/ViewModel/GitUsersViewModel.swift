@@ -10,16 +10,23 @@ import Combine
 
 protocol GitUsersDataProviding {
   var usersPublisher: AnyPublisher<[User], Never> { get }
-  func loadGitHubUsers()
+  func loadGitHubUsers(index: Int?)
 }
 
-final class GitUsersViewModel: GitUsersViewState {
+final class GitUsersViewModel: UsersListViewModel {
   
   // MARK: Dependencies
   private let dataProvider: GitUsersDataProviding
+  
   private var cancellables = Set<AnyCancellable>()
+  private var isLoading: Bool = false
   @Published var gitUsers: [User] = []
 
+  var lastUserId: Int? {
+    guard !gitUsers.isEmpty else { return nil }
+    return gitUsers.last?.id
+  }
+  
   init(dataProvider: GitUsersDataProviding) {
     self.dataProvider = dataProvider
     subscribeForGitHubUsers()
@@ -31,11 +38,14 @@ final class GitUsersViewModel: GitUsersViewState {
       .receive(on: DispatchQueue.main)
       .sink { [weak self] users in
         self?.gitUsers = users
+        self?.isLoading = false
       }
       .store(in: &cancellables)
   }
   
-  private func loadGitHubUsers() {
-    self.dataProvider.loadGitHubUsers()
+  func loadGitHubUsers() {
+    self.isLoading = true
+    self.dataProvider.loadGitHubUsers(index: lastUserId)
   }
 }
+

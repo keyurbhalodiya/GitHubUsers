@@ -38,14 +38,22 @@ final class NetworkService {
   
   private var cancellables = Set<AnyCancellable>()
   
-  func getData<T: Decodable>(endpoint: String, type: T.Type) -> Future<T, Error> {
+  func getData<T: Decodable>(endpoint: String, parameters: [String : Any], type: T.Type) -> Future<T, Error> {
     
     return Future<T, Error> { [weak self] promise in
       guard let self = self, let url = URL(string: "\(Constant.baseUrl + endpoint)") else {
         return promise(.failure(NetworkError.invalidURL))
       }
+      var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
+      components?.queryItems = parameters.map { (key, value) in
+        URLQueryItem(name: key, value: "\(value)")
+      }
       
-      var request = URLRequest(url: url)
+      guard let componentsUrl = components?.url else {
+        return promise(.failure(NetworkError.invalidURL))
+      }
+      
+      var request = URLRequest(url: componentsUrl)
       request.httpMethod = "GET"
       request.addValue("Bearer \(Constant.token)", forHTTPHeaderField: "Authorization")
       URLSession.shared.dataTaskPublisher(for: request)
