@@ -37,13 +37,15 @@ final class GitUsersViewModel: UsersListViewModel {
     dataProvider.usersPublisher
       .receive(on: DispatchQueue.main)
       .sink { [weak self] users in
-        self?.gitUsers = users
-        self?.isLoading = false
+        guard let self else { return }
+        self.gitUsers.append(contentsOf: users)
+        self.isLoading = false
       }
       .store(in: &cancellables)
   }
   
   func loadGitHubUsers() {
+    guard !isLoading else { return }
     self.isLoading = true
     self.dataProvider.loadGitHubUsers(index: lastUserId)
   }

@@ -8,20 +8,36 @@
 import SwiftUI
 import SDWebImageSwiftUI
 
-struct GitUserDetails: View {
-  @State var userInfo: UserInfo
-  @State var repos: [UserRepositories]
+protocol GitUserDetailsViewState: ObservableObject {
+  var userInfo: UserInfo? { get }
+  var repos: [UserRepositories] { get }
+  var lastRepoId: Int? { get }
+}
+
+protocol GitUserDetailsViewListner {
+  func loadGitRepos()
+}
+
+typealias UserDetailsViewModel = GitUserDetailsViewState & GitUserDetailsViewListner
+
+struct GitUserDetails<ViewModel: UserDetailsViewModel>: View {
+  
+  @StateObject private var viewModel: ViewModel
+  
+  public init(viewModel: ViewModel) {
+    self._viewModel = StateObject(wrappedValue: viewModel)
+  }
   
   var body: some View {
     HStack(spacing: 20) {
-      WebImage(url: URL(string: userInfo.avatarURL ?? ""))
+      WebImage(url: URL(string: viewModel.userInfo?.avatarURL ?? ""))
         .resizable()
         .frame(width: 100, height: 100)
         .clipShape(.circle)
       VStack(alignment: .leading) {
-        Text(userInfo.name ?? "NA")
+        Text(viewModel.userInfo?.name ?? "NA")
         Spacer()
-        Text("@\(userInfo.login ?? "")")
+        Text("@\(viewModel.userInfo?.login ?? "")")
           .foregroundStyle(.link)
       }
       .frame(height: 50)
@@ -32,7 +48,7 @@ struct GitUserDetails: View {
     
     HStack(spacing: 20) {
       VStack(alignment: .center) {
-        Text("\(userInfo.followers ?? 0)")
+        Text("\(viewModel.userInfo?.followers ?? 0)")
           .font(.system(size: 22, weight: .heavy, design: .default))
         Spacer()
         Text("Followers")
@@ -41,7 +57,7 @@ struct GitUserDetails: View {
       }
       Divider()
       VStack(alignment: .center) {
-        Text("\(userInfo.following ?? 0)")
+        Text("\(viewModel.userInfo?.following ?? 0)")
           .font(.system(size: 22, weight: .heavy, design: .default))
         Spacer()
         Text("Following")
@@ -50,7 +66,7 @@ struct GitUserDetails: View {
       }
       Divider()
       VStack(alignment: .center) {
-        Text(userInfo.location ?? "NA")
+        Text(viewModel.userInfo?.location ?? "NA")
           .font(.system(size: 22, weight: .heavy, design: .default))
         Spacer()
         Text("Location")
@@ -60,7 +76,7 @@ struct GitUserDetails: View {
     }
     .frame(height: 50)
     
-    List(repos, id: \.self) { repo in
+    List(viewModel.repos, id: \.self) { repo in
       VStack(alignment: .leading, spacing: 5) {
         HStack {
           Text(repo.name ?? "")
@@ -79,12 +95,28 @@ struct GitUserDetails: View {
           .foregroundStyle(.gray)
       }
       .contentShape(Rectangle())
+      .onAppear {
+        guard repo.id == viewModel.lastRepoId else { return }
+        viewModel.loadGitRepos()
+      }
     }
     .listStyle(.plain)
   }
 }
 
-#Preview {
-  GitUserDetails(userInfo: UserInfo(login: "keyur", id: 1, htmlURL: nil, name: "Keyur Bhalodiya", avatarURL: "https://avatars.githubusercontent.com/u/1?v=4", location: "India", followers: 123, following: 456),
-                 repos: [UserRepositories(id: 1, name: "chronic", htmlURL: "https://github.com/mojombo/30daysoflaptops.github.io", description: "Chronic is a pure Ruby natural language date parser.", language: "Swift", starCount: 36)])
+// MARK: Preview
+
+#if DEBUG
+private final class GitUserDetailsViewModelMock: UserDetailsViewModel {
+  var lastRepoId: Int?
+  var userInfo: UserInfo? = UserInfo(login: "keyur", id: 1, htmlURL: nil, name: "Keyur Bhalodiya", avatarURL: "https://avatars.githubusercontent.com/u/1?v=4", location: "India", followers: 123, following: 456)
+  var repos: [UserRepositories] = [UserRepositories(id: 1, name: "chronic", htmlURL: "https://github.com/mojombo/30daysoflaptops.github.io", description: "Chronic is a pure Ruby natural language date parser.", language: "Swift", starCount: 36)]
+  
+  func loadGitRepos() { }
 }
+
+#Preview {
+  GitUserDetails(viewModel: GitUserDetailsViewModelMock())
+}
+
+#endif

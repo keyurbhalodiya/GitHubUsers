@@ -6,10 +6,11 @@
 //
 
 import SwiftUI
+import Combine
 import SDWebImageSwiftUI
 
 protocol GitUsersViewState: ObservableObject {
-  var gitUsers: [User] { get set }
+  var gitUsers: [User] { get }
   var lastUserId: Int? { get }
 }
 
@@ -22,17 +23,17 @@ typealias UsersListViewModel = GitUsersViewState & GitUsersViewListner
 struct GitUsers<ViewModel: UsersListViewModel>: View {
   
   @StateObject private var viewModel: ViewModel
-  
+
+  let didClickUser = PassthroughSubject<User, Never>()
+
   public init(viewModel: ViewModel) {
     self._viewModel = StateObject(wrappedValue: viewModel)
   }
   
   var body: some View {
-    NavigationView {
       rowContent
       .listStyle(.plain)
       .navigationTitle("GitHub Users")
-    }
   }
   
   @ViewBuilder
@@ -45,10 +46,16 @@ struct GitUsers<ViewModel: UsersListViewModel>: View {
                .clipShape(.circle)
         Text(user.login ?? "")
           .font(.system(size: 22))
+        Spacer()
       }
+      .contentShape(Rectangle())
       .onAppear {
         guard user.id == viewModel.lastUserId else { return }
         viewModel.loadGitHubUsers()
+      }
+      .onTapGesture {
+        print(user)
+        didClickUser.send(user)
       }
     }
   }

@@ -13,7 +13,6 @@ struct User: Codable, Hashable {
   let id: Int?
   let avatarURL: String?
   
-  
   enum CodingKeys: String, CodingKey {
     case login, id
     case avatarURL = "avatar_url"
