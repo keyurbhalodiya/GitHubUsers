@@ -1,5 +1,5 @@
 //
-//  GitUserDetailsViewModel.swift
+//  UserDetailsViewModel.swift
 //  GitHubUsers
 //
 //  Created by Keyur Bhalodiya on 2024/06/23.
@@ -8,17 +8,17 @@
 import Foundation
 import Combine
 
-protocol GitUserDetailsDataProviding {
+protocol UserDetailsViewDataProviding {
   var userInfo: AnyPublisher<UserInfo?, Never> { get }
   var repos: AnyPublisher<[UserRepositories], Never> { get }
   func fetchUserInfo(forUser userName: String)
   func loadGitRepos(forUser userName: String, fromPage pageIndex: Int)
 }
 
-final class GitUserDetailsViewModel: UserDetailsViewModel {
+final class UserDetailsViewModel: UserInfoViewModel {
   
   // MARK: Dependencies
-  private let dataProvider: GitUserDetailsDataProviding
+  private let dataProvider: UserDetailsViewDataProviding
   private let loginUsername: String
   
   private var cancellables = Set<AnyCancellable>()
@@ -28,7 +28,7 @@ final class GitUserDetailsViewModel: UserDetailsViewModel {
   @Published var userInfo: UserInfo?
   @Published var repos: [UserRepositories] = []
   
-  init(loginUsername: String, dataProvider: GitUserDetailsDataProviding) {
+  init(loginUsername: String, dataProvider: UserDetailsViewDataProviding) {
     self.loginUsername = loginUsername
     self.dataProvider = dataProvider
     subscribeForUserDetailsAndRepos()

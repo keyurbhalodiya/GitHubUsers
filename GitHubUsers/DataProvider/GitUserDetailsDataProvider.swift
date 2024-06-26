@@ -1,5 +1,5 @@
 //
-//  GitUserDetailsDataProvider.swift
+//  UserDetailsViewDataProvider.swift
 //  GitHubUsers
 //
 //  Created by Keyur Bhalodiya on 2024/06/26.
@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-final class GitUserDetailsDataProvider: GitUserDetailsDataProviding {
+final class UserDetailsViewDataProvider: UserDetailsViewDataProviding {
   
   private enum Constant {
     static let keyPage = "page"
@@ -58,7 +58,7 @@ final class GitUserDetailsDataProvider: GitUserDetailsDataProviding {
           print("Load repos successfully")
         }
       } receiveValue: { [weak self] repos in
-        self?.gitRepos.append(contentsOf: repos)
+        self?.gitRepos = repos
         self?.hasLoadedAllRepos = repos.count < Constant.perPageLimit
       } .store(in: &cancellables)
   }

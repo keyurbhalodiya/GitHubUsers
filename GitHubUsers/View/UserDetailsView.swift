@@ -1,5 +1,5 @@
 //
-//  GitUserDetails.swift
+//  UserDetailsView.swift
 //  GitHubUsers
 //
 //  Created by Keyur Bhalodiya on 2024/06/23.
@@ -8,19 +8,19 @@
 import SwiftUI
 import SDWebImageSwiftUI
 
-protocol GitUserDetailsViewState: ObservableObject {
+protocol UserDetailsViewState: ObservableObject {
   var userInfo: UserInfo? { get }
   var repos: [UserRepositories] { get }
   var lastRepoId: Int? { get }
 }
 
-protocol GitUserDetailsViewListner {
+protocol UserDetailsViewListner {
   func loadGitRepos()
 }
 
-typealias UserDetailsViewModel = GitUserDetailsViewState & GitUserDetailsViewListner
+typealias UserInfoViewModel = UserDetailsViewState & UserDetailsViewListner
 
-struct GitUserDetails<ViewModel: UserDetailsViewModel>: View {
+struct UserDetailsView<ViewModel: UserInfoViewModel>: View {
   
   @StateObject private var viewModel: ViewModel
   
@@ -29,6 +29,15 @@ struct GitUserDetails<ViewModel: UserDetailsViewModel>: View {
   }
   
   var body: some View {
+    headerViewContent
+    Divider()
+    userConnectionViewContent
+    Divider()
+    repoListViewContent
+  }
+  
+  @ViewBuilder
+  var headerViewContent: some View {
     HStack(spacing: 20) {
       WebImage(url: URL(string: viewModel.userInfo?.avatarURL ?? ""))
         .resizable()
@@ -45,37 +54,45 @@ struct GitUserDetails<ViewModel: UserDetailsViewModel>: View {
       Spacer()
     }
     .padding(20)
-    
+  }
+  
+  @ViewBuilder
+  var userConnectionViewContent: some View {
     HStack(spacing: 20) {
       VStack(alignment: .center) {
         Text("\(viewModel.userInfo?.followers ?? 0)")
-          .font(.system(size: 22, weight: .heavy, design: .default))
+          .font(.system(size: 20, weight: .heavy, design: .default))
         Spacer()
         Text("Followers")
           .foregroundStyle(.gray)
-          .font(.system(size: 18, weight: .medium, design: .default))
+          .font(.system(size: 16, weight: .medium, design: .default))
       }
       Divider()
       VStack(alignment: .center) {
         Text("\(viewModel.userInfo?.following ?? 0)")
-          .font(.system(size: 22, weight: .heavy, design: .default))
+          .font(.system(size: 20, weight: .heavy, design: .default))
         Spacer()
         Text("Following")
           .foregroundStyle(.gray)
-          .font(.system(size: 18, weight: .medium, design: .default))
+          .font(.system(size: 16, weight: .medium, design: .default))
       }
       Divider()
       VStack(alignment: .center) {
         Text(viewModel.userInfo?.location ?? "NA")
-          .font(.system(size: 22, weight: .heavy, design: .default))
+          .font(.system(size: 20, weight: .heavy, design: .default))
+          .lineLimit(2)
         Spacer()
         Text("Location")
           .foregroundStyle(.gray)
-          .font(.system(size: 18, weight: .medium, design: .default))
+          .font(.system(size: 16, weight: .medium, design: .default))
       }
     }
-    .frame(height: 50)
-    
+    .frame(height: 40)
+    .padding(20)
+  }
+  
+  @ViewBuilder
+  var repoListViewContent: some View {
     List(viewModel.repos, id: \.self) { repo in
       VStack(alignment: .leading, spacing: 5) {
         HStack {
@@ -107,7 +124,7 @@ struct GitUserDetails<ViewModel: UserDetailsViewModel>: View {
 // MARK: Preview
 
 #if DEBUG
-private final class GitUserDetailsViewModelMock: UserDetailsViewModel {
+private final class UserDetailsViewModelMock: UserInfoViewModel {
   var lastRepoId: Int?
   var userInfo: UserInfo? = UserInfo(login: "keyur", id: 1, htmlURL: nil, name: "Keyur Bhalodiya", avatarURL: "https://avatars.githubusercontent.com/u/1?v=4", location: "India", followers: 123, following: 456)
   var repos: [UserRepositories] = [UserRepositories(id: 1, name: "chronic", htmlURL: "https://github.com/mojombo/30daysoflaptops.github.io", description: "Chronic is a pure Ruby natural language date parser.", language: "Swift", starCount: 36)]
@@ -116,7 +133,7 @@ private final class GitUserDetailsViewModelMock: UserDetailsViewModel {
 }
 
 #Preview {
-  GitUserDetails(viewModel: GitUserDetailsViewModelMock())
+  UserDetailsView(viewModel: UserDetailsViewModelMock())
 }
 
 #endif

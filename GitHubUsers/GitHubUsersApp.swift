@@ -9,9 +9,9 @@ import SwiftUI
 
 @main
 struct GitHubUsersApp: App {
-    var body: some Scene {
-        WindowGroup {
-          GitUsers(viewModel: GitUsersViewModel(dataProvider: DataProvider()))
-        }
-    }
+  var body: some Scene {
+      WindowGroup {
+          ContentView()
+      }
+  }
 }

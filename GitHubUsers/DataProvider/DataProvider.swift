@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-final class DataProvider: GitUsersDataProviding {
+final class DataProvider: UserListViewDataProviding {
   
   private enum Constant {
     static let keySince = "since"
@@ -40,7 +40,7 @@ final class DataProvider: GitUsersDataProviding {
           print("Finished successfully")
         }
       } receiveValue: { [weak self] users in
-        self?.users.append(contentsOf: users)
+        self?.users = users
         self?.hasLoadedAllUsers = users.count < Constant.perPageLimit
       } .store(in: &cancellables)
   }

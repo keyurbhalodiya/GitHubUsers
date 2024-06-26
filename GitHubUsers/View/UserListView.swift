@@ -1,5 +1,5 @@
 //
-//  GitUsers.swift
+//  UserListView.swift
 //  GitHubUsers
 //
 //  Created by Keyur Bhalodiya on 2024/06/23.
@@ -9,18 +9,18 @@ import SwiftUI
 import Combine
 import SDWebImageSwiftUI
 
-protocol GitUsersViewState: ObservableObject {
-  var gitUsers: [User] { get }
+protocol UserListViewState: ObservableObject {
+  var users: [User] { get }
   var lastUserId: Int? { get }
 }
 
-protocol GitUsersViewListner {
+protocol UserListViewListner {
   func loadGitHubUsers()
 }
 
-typealias UsersListViewModel = GitUsersViewState & GitUsersViewListner
+typealias UsersListViewModel = UserListViewState & UserListViewListner
 
-struct GitUsers<ViewModel: UsersListViewModel>: View {
+struct UserListView<ViewModel: UsersListViewModel>: View {
   
   @StateObject private var viewModel: ViewModel
 
@@ -38,7 +38,7 @@ struct GitUsers<ViewModel: UsersListViewModel>: View {
   
   @ViewBuilder
   var rowContent: some View {
-    List(viewModel.gitUsers, id: \.self) { user in
+    List(viewModel.users, id: \.self) { user in
       HStack {
         WebImage(url: URL(string: user.avatarURL ?? ""))
                .resizable()
@@ -64,16 +64,16 @@ struct GitUsers<ViewModel: UsersListViewModel>: View {
 // MARK: Preview
 
 #if DEBUG
-private final class GitUsersViewModelMock: UsersListViewModel {
+private final class UserListViewModelMock: UsersListViewModel {
   var lastUserId: Int?
-  var gitUsers: [User] = [
+  var users: [User] = [
     User(login: "User 1", id: 1, avatarURL: "https://placehold.co/75x75/png"),
     User(login: "User 2", id: 2, avatarURL: "https://placehold.co/75x75/png")
   ]
   func loadGitHubUsers() { }
 }
 #Preview {
-  GitUsers(viewModel: GitUsersViewModelMock())
+  UserListView(viewModel: UserListViewModelMock())
 }
 
 #endif

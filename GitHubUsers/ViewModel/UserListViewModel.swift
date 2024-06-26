@@ -1,5 +1,5 @@
 //
-//  GitUsersViewModel.swift
+//  UserListViewModel.swift
 //  GitHubUsers
 //
 //  Created by Keyur Bhalodiya on 2024/06/23.
@@ -8,26 +8,26 @@
 import Foundation
 import Combine
 
-protocol GitUsersDataProviding {
+protocol UserListViewDataProviding {
   var usersPublisher: AnyPublisher<[User], Never> { get }
   func loadGitHubUsers(index: Int?)
 }
 
-final class GitUsersViewModel: UsersListViewModel {
+final class UserListViewModel: UsersListViewModel {
   
   // MARK: Dependencies
-  private let dataProvider: GitUsersDataProviding
+  private let dataProvider: UserListViewDataProviding
   
   private var cancellables = Set<AnyCancellable>()
   private var isLoading: Bool = false
-  @Published var gitUsers: [User] = []
+  @Published var users: [User] = []
 
   var lastUserId: Int? {
-    guard !gitUsers.isEmpty else { return nil }
-    return gitUsers.last?.id
+    guard !users.isEmpty else { return nil }
+    return users.last?.id
   }
   
-  init(dataProvider: GitUsersDataProviding) {
+  init(dataProvider: UserListViewDataProviding) {
     self.dataProvider = dataProvider
     subscribeForGitHubUsers()
     loadGitHubUsers()
@@ -38,7 +38,7 @@ final class GitUsersViewModel: UsersListViewModel {
       .receive(on: DispatchQueue.main)
       .sink { [weak self] users in
         guard let self else { return }
-        self.gitUsers.append(contentsOf: users)
+        self.users.append(contentsOf: users)
         self.isLoading = false
       }
       .store(in: &cancellables)
