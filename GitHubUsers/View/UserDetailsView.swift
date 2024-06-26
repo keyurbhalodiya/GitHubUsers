@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 import SDWebImageSwiftUI
 
 protocol UserDetailsViewState: ObservableObject {
@@ -25,6 +26,8 @@ struct UserDetailsView<ViewModel: UserInfoViewModel>: View {
   
   @StateObject private var viewModel: ViewModel
   
+  let didClickRepo = PassthroughSubject<String?, Never>()
+
   public init(viewModel: ViewModel) {
     self._viewModel = StateObject(wrappedValue: viewModel)
   }
@@ -117,6 +120,9 @@ struct UserDetailsView<ViewModel: UserInfoViewModel>: View {
       .onAppear {
         guard repo.id == viewModel.lastRepoId else { return }
         viewModel.loadGitRepos()
+      }
+      .onTapGesture {
+        didClickRepo.send(repo.htmlURL)
       }
     }
     .listStyle(.plain)

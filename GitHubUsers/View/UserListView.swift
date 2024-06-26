@@ -57,7 +57,6 @@ struct UserListView<ViewModel: UsersListViewModel>: View {
         viewModel.loadGitHubUsers()
       }
       .onTapGesture {
-        print(user)
         didClickUser.send(user)
       }
     }

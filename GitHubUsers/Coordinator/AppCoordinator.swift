@@ -10,7 +10,7 @@ import Combine
 
 // MARK: - AppCoordinator
 final class AppCoordinator: ObservableObject {
-  //  @Published var page: Page
+
   @Published var path: NavigationPath
   private var cancellables = Set<AnyCancellable>()
   
@@ -44,7 +44,6 @@ final class AppCoordinator: ObservableObject {
     let usersFlowCoordinator = UserDetailsCoordinator(userName: userName)
     self.bind(userCoordinator: usersFlowCoordinator)
     self.push(usersFlowCoordinator)
-    
   }
   
   // MARK: Flow Coordinator Bindings

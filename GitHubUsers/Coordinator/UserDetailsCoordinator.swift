@@ -13,6 +13,8 @@ final class UserDetailsCoordinator: Hashable {
   
   private var userName: String
   private var id: UUID
+  
+  private var cancellables = Set<AnyCancellable>()
   let pushCoordinator = PassthroughSubject<UserDetailsCoordinator, Never>()
   
   init(userName: String) {
@@ -20,9 +22,16 @@ final class UserDetailsCoordinator: Hashable {
     self.userName = userName
   }
   
-  @ViewBuilder
   func build() -> some View {
-    UserDetailsView(viewModel: UserDetailsViewModel(loginUsername: userName, dataProvider: UserDetailsViewDataProvider()))
+    let userDetailsView = UserDetailsView(viewModel: UserDetailsViewModel(loginUsername: userName, dataProvider: UserDetailsViewDataProvider()))
+    userDetailsView.didClickRepo
+      .receive(on: DispatchQueue.main)
+      .sink(receiveValue: { url in
+        guard let url, let repoUrl = URL(string: url) else { return }
+        UIApplication.shared.open(repoUrl)
+      })
+      .store(in: &cancellables)
+    return userDetailsView
   }
   
   func hash(into hasher: inout Hasher) {
