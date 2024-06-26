@@ -17,7 +17,6 @@ final class DataProvider: UserListViewDataProviding {
   }
   
   private var cancellables: Set<AnyCancellable> = Set()
-  private var hasLoadedAllUsers: Bool = false
   
   @Published private var users: [User] = []
   
@@ -25,6 +24,8 @@ final class DataProvider: UserListViewDataProviding {
     $users.eraseToAnyPublisher()
   }
   
+  var hasLoadedAllUsers: Bool = false
+
   func loadGitHubUsers(index: Int?) {
     guard !hasLoadedAllUsers else { return }
     var parameters: [String : Any] = [Constant.keyPerPageLimit : Constant.perPageLimit]

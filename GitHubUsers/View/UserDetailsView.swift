@@ -12,6 +12,7 @@ protocol UserDetailsViewState: ObservableObject {
   var userInfo: UserInfo? { get }
   var repos: [UserRepositories] { get }
   var lastRepoId: Int? { get }
+  var isLoadingRepos: Bool { get }
 }
 
 protocol UserDetailsViewListner {
@@ -34,6 +35,7 @@ struct UserDetailsView<ViewModel: UserInfoViewModel>: View {
     userConnectionViewContent
     Divider()
     repoListViewContent
+    .hudOverlay(viewModel.isLoadingRepos)
   }
   
   @ViewBuilder
@@ -125,6 +127,7 @@ struct UserDetailsView<ViewModel: UserInfoViewModel>: View {
 
 #if DEBUG
 private final class UserDetailsViewModelMock: UserInfoViewModel {
+  var isLoadingRepos: Bool = true
   var lastRepoId: Int?
   var userInfo: UserInfo? = UserInfo(login: "keyur", id: 1, htmlURL: nil, name: "Keyur Bhalodiya", avatarURL: "https://avatars.githubusercontent.com/u/1?v=4", location: "India", followers: 123, following: 456)
   var repos: [UserRepositories] = [UserRepositories(id: 1, name: "chronic", htmlURL: "https://github.com/mojombo/30daysoflaptops.github.io", description: "Chronic is a pure Ruby natural language date parser.", language: "Swift", starCount: 36)]

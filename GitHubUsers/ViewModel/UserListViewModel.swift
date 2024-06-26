@@ -11,6 +11,7 @@ import Combine
 protocol UserListViewDataProviding {
   var usersPublisher: AnyPublisher<[User], Never> { get }
   func loadGitHubUsers(index: Int?)
+  var hasLoadedAllUsers: Bool { get }
 }
 
 final class UserListViewModel: UsersListViewModel {
@@ -19,7 +20,7 @@ final class UserListViewModel: UsersListViewModel {
   private let dataProvider: UserListViewDataProviding
   
   private var cancellables = Set<AnyCancellable>()
-  private var isLoading: Bool = false
+  @Published var isLoading: Bool = false
   @Published var users: [User] = []
 
   var lastUserId: Int? {
@@ -45,7 +46,7 @@ final class UserListViewModel: UsersListViewModel {
   }
   
   func loadGitHubUsers() {
-    guard !isLoading else { return }
+    guard !isLoading, !dataProvider.hasLoadedAllUsers else { return }
     self.isLoading = true
     self.dataProvider.loadGitHubUsers(index: lastUserId)
   }

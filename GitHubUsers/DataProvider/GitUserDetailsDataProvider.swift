@@ -17,7 +17,6 @@ final class UserDetailsViewDataProvider: UserDetailsViewDataProviding {
   }
   
   private var cancellables: Set<AnyCancellable> = Set()
-  private var hasLoadedAllRepos: Bool = false
   
   @Published private var gitUserInfo: UserInfo?
   @Published private var gitRepos: [UserRepositories] = []
@@ -30,6 +29,8 @@ final class UserDetailsViewDataProvider: UserDetailsViewDataProviding {
     $gitRepos.eraseToAnyPublisher()
   }
   
+  var hasLoadedAllRepos: Bool = false
+
   func fetchUserInfo(forUser userName: String) {
     NetworkService.shared.getData(endpoint: "users/\(userName)", parameters: [:], type: UserInfo.self)
       .sink { completion in

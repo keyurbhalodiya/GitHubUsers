@@ -11,6 +11,7 @@ import Combine
 protocol UserDetailsViewDataProviding {
   var userInfo: AnyPublisher<UserInfo?, Never> { get }
   var repos: AnyPublisher<[UserRepositories], Never> { get }
+  var hasLoadedAllRepos: Bool { get }
   func fetchUserInfo(forUser userName: String)
   func loadGitRepos(forUser userName: String, fromPage pageIndex: Int)
 }
@@ -22,11 +23,11 @@ final class UserDetailsViewModel: UserInfoViewModel {
   private let loginUsername: String
   
   private var cancellables = Set<AnyCancellable>()
-  private var isLoadingRepos: Bool = false
   private var page: Int = 0
   
   @Published var userInfo: UserInfo?
   @Published var repos: [UserRepositories] = []
+  @Published var isLoadingRepos: Bool = false
   
   init(loginUsername: String, dataProvider: UserDetailsViewDataProviding) {
     self.loginUsername = loginUsername
@@ -64,7 +65,7 @@ final class UserDetailsViewModel: UserInfoViewModel {
   }
     
   func loadGitRepos() {
-    guard !isLoadingRepos else { return }
+    guard !isLoadingRepos, !dataProvider.hasLoadedAllRepos else { return }
     self.isLoadingRepos = true
     self.page += 1
     dataProvider.loadGitRepos(forUser: loginUsername, fromPage: page)

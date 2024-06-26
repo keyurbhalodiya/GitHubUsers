@@ -12,6 +12,7 @@ import SDWebImageSwiftUI
 protocol UserListViewState: ObservableObject {
   var users: [User] { get }
   var lastUserId: Int? { get }
+  var isLoading: Bool { get }
 }
 
 protocol UserListViewListner {
@@ -31,10 +32,12 @@ struct UserListView<ViewModel: UsersListViewModel>: View {
   }
   
   var body: some View {
-      rowContent
-      .listStyle(.plain)
-      .navigationTitle("GitHub Users")
+    rowContent
+    .listStyle(.plain)
+    .navigationTitle("GitHub Users")
+    .hudOverlay(viewModel.isLoading)
   }
+  
   
   @ViewBuilder
   var rowContent: some View {
@@ -65,6 +68,7 @@ struct UserListView<ViewModel: UsersListViewModel>: View {
 
 #if DEBUG
 private final class UserListViewModelMock: UsersListViewModel {
+  var isLoading: Bool = true
   var lastUserId: Int?
   var users: [User] = [
     User(login: "User 1", id: 1, avatarURL: "https://placehold.co/75x75/png"),
