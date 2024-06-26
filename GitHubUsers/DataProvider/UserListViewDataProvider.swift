@@ -1,5 +1,5 @@
 //
-//  DataProvider.swift
+//  UserListViewDataProvider.swift
 //  GitHubUsers
 //
 //  Created by Keyur Bhalodiya on 2024/06/23.
@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-final class DataProvider: UserListViewDataProviding {
+final class UserListViewDataProvider: UserListViewDataProviding {
   
   private enum Constant {
     static let keySince = "since"

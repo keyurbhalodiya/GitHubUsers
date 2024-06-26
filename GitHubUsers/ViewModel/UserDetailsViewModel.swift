@@ -70,5 +70,4 @@ final class UserDetailsViewModel: UserInfoViewModel {
     self.page += 1
     dataProvider.loadGitRepos(forUser: loginUsername, fromPage: page)
   }
-  
 }

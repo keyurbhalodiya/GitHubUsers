@@ -28,7 +28,7 @@ final class AppCoordinator: ObservableObject {
   }
   
   private func userListView() -> some View {
-    let userListView = UserListView(viewModel: UserListViewModel(dataProvider: DataProvider()))
+    let userListView = UserListView(viewModel: UserListViewModel(dataProvider: UserListViewDataProvider()))
     userListView.didClickUser
       .receive(on: DispatchQueue.main)
       .sink(receiveValue: { [weak self] user in

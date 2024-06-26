@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-private enum NetworkError: Error {
+enum NetworkError: Error {
     case invalidURL
     case responseError
     case unknown
