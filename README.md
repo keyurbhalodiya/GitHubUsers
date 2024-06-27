@@ -39,4 +39,11 @@ From the details screen, users can open the GitHub profile or any repository in 
 
 [GitHub User Repositories ](https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#list-repositories-for-a-user)
 
+# User details and repositories 
+![Simulator Screenshot - iPhone 11 iOS 17 2 - 2024-06-27 at 18 27 08](https://github.com/keyurbhalodiya/GitHubUsers/assets/7112264/3bbae962-ba2f-49e0-a217-ad4d473afc7e)
 
+# User search
+![Simulator Screenshot - iPhone 11 iOS 17 2 - 2024-06-27 at 18 24 17](https://github.com/keyurbhalodiya/GitHubUsers/assets/7112264/5e04e472-b828-46c7-be12-ba2f5504d087)
+
+# User list
+![Simulator Screenshot - iPhone 11 iOS 17 2 - 2024-06-27 at 18 23 49](https://github.com/keyurbhalodiya/GitHubUsers/assets/7112264/f8102a02-58d0-481a-8c64-13ac7393de85)
