@@ -25,8 +25,9 @@ typealias UserInfoViewModel = UserDetailsViewState & UserDetailsViewListner
 struct UserDetailsView<ViewModel: UserInfoViewModel>: View {
   
   @StateObject private var viewModel: ViewModel
-  
-  let didClickRepo = PassthroughSubject<String?, Never>()
+  @Environment(\.isLoading) private var isLoading
+
+  let didTapped = PassthroughSubject<String?, Never>()
 
   public init(viewModel: ViewModel) {
     self._viewModel = StateObject(wrappedValue: viewModel)
@@ -38,7 +39,13 @@ struct UserDetailsView<ViewModel: UserInfoViewModel>: View {
     userConnectionViewContent
     Divider()
     repoListViewContent
-    .hudOverlay(viewModel.isLoadingRepos)
+    .navigationBarTitleDisplayMode(.inline)
+    .onChange(of: viewModel.isLoadingRepos) { newValue in
+        isLoading.wrappedValue = newValue
+    }
+    .onAppear {
+      viewModel.loadGitRepos()
+    }
   }
   
   @ViewBuilder
@@ -52,7 +59,10 @@ struct UserDetailsView<ViewModel: UserInfoViewModel>: View {
         Text(viewModel.userInfo?.name ?? "NA")
         Spacer()
         Text("@\(viewModel.userInfo?.login ?? "")")
-          .foregroundStyle(.link)
+          .foregroundStyle(.blue)
+          .onTapGesture {
+            didTapped.send(viewModel.userInfo?.htmlURL)
+          }
       }
       .frame(height: 50)
       .font(.system(size: 22, weight: .heavy, design: .default))
@@ -122,7 +132,7 @@ struct UserDetailsView<ViewModel: UserInfoViewModel>: View {
         viewModel.loadGitRepos()
       }
       .onTapGesture {
-        didClickRepo.send(repo.htmlURL)
+        didTapped.send(repo.htmlURL)
       }
     }
     .listStyle(.plain)
@@ -142,7 +152,9 @@ private final class UserDetailsViewModelMock: UserInfoViewModel {
 }
 
 #Preview {
-  UserDetailsView(viewModel: UserDetailsViewModelMock())
+  NavigationStack {
+    UserDetailsView(viewModel: UserDetailsViewModelMock())
+  }
 }
 
 #endif

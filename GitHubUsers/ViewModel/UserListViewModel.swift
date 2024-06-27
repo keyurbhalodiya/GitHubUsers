@@ -37,12 +37,12 @@ final class UserListViewModel: UsersListViewModel {
   init(dataProvider: UserListViewDataProviding) {
     self.dataProvider = dataProvider
     subscribeForGitHubUsers()
-    loadGitHubUsers()
   }
   
   private func subscribeForGitHubUsers() {
     dataProvider.usersPublisher
       .receive(on: DispatchQueue.main)
+      .dropFirst()
       .sink { [weak self] users in
         guard let self else { return }
         self.users.append(contentsOf: users)
@@ -53,6 +53,7 @@ final class UserListViewModel: UsersListViewModel {
     
     dataProvider.usersSearchPublisher
       .receive(on: DispatchQueue.main)
+      .dropFirst()
       .sink { [weak self] users in
         guard let self else { return }
         self.users.append(contentsOf: users)

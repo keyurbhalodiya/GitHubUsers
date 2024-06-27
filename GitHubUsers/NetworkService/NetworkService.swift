@@ -28,7 +28,7 @@ extension NetworkError: LocalizedError {
 }
 
 private enum Constant {
-  static let token = "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"
+  static let token = "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"
   static let baseUrl = "https://api.github.com/"
 }
 

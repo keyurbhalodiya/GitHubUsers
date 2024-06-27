@@ -27,7 +27,9 @@ struct UserListView<ViewModel: UsersListViewModel>: View {
   
   @StateObject private var viewModel: ViewModel
   @State private var searchText = ""
-
+  @State private var isFirstLoad = true
+  @Environment(\.isLoading) private var isLoading
+  
   let didClickUser = PassthroughSubject<User, Never>()
 
   public init(viewModel: ViewModel) {
@@ -46,7 +48,14 @@ struct UserListView<ViewModel: UsersListViewModel>: View {
       }
       viewModel.searchUsers(with: newValue)
     }
-    .hudOverlay(viewModel.isLoading)
+    .onChange(of: viewModel.isLoading) { newValue in
+        isLoading.wrappedValue = newValue
+    }
+    .onAppear {
+      guard isFirstLoad else { return }
+      viewModel.loadGitHubUsers()
+      self.isFirstLoad = false
+    }
   }
   
   

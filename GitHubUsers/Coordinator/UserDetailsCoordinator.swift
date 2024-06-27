@@ -24,7 +24,7 @@ final class UserDetailsCoordinator: Hashable {
   
   func build() -> some View {
     let userDetailsView = UserDetailsView(viewModel: UserDetailsViewModel(loginUsername: userName, dataProvider: UserDetailsViewDataProvider()))
-    userDetailsView.didClickRepo
+    userDetailsView.didTapped
       .receive(on: DispatchQueue.main)
       .sink(receiveValue: { url in
         guard let url, let repoUrl = URL(string: url) else { return }

@@ -39,7 +39,6 @@ final class UserDetailsViewModel: UserInfoViewModel {
     self.dataProvider = dataProvider
     subscribeForUserDetailsAndRepos()
     fetchUserInfo()
-    loadGitRepos()
   }
   
   private func fetchUserInfo() {
@@ -56,6 +55,7 @@ final class UserDetailsViewModel: UserInfoViewModel {
     
     dataProvider.repos
       .receive(on: DispatchQueue.main)
+      .dropFirst()
       .sink { [weak self] repos in
         guard let self else { return }
         self.repos.append(contentsOf: repos)
