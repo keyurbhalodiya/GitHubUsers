@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		713563542C2D33C900F5FC90 /* UserSearch.json in Resources */ = {isa = PBXBuildFile; fileRef = 713563532C2D33C900F5FC90 /* UserSearch.json */; };
 		718836052C2B132000782D96 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 718836042C2B132000782D96 /* ContentView.swift */; };
 		71CDCDA92C29A36000D9A7DD /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 71CDCDA82C29A36000D9A7DD /* SDWebImageSwiftUI */; };
 		71D1C44F2C28850800B778D2 /* GitHubUsersApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D1C44E2C28850800B778D2 /* GitHubUsersApp.swift */; };
@@ -48,6 +49,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		713563532C2D33C900F5FC90 /* UserSearch.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = UserSearch.json; sourceTree = "<group>"; };
 		718836042C2B132000782D96 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		71D1C44B2C28850800B778D2 /* GitHubUsers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GitHubUsers.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		71D1C44E2C28850800B778D2 /* GitHubUsersApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubUsersApp.swift; sourceTree = "<group>"; };
@@ -231,6 +233,7 @@
 		71DE300D2C2C2ABA002615D1 /* SampleData */ = {
 			isa = PBXGroup;
 			children = (
+				713563532C2D33C900F5FC90 /* UserSearch.json */,
 				71DE300A2C2C2ABA002615D1 /* UserInfo.json */,
 				71DE300B2C2C2ABA002615D1 /* UserList.json */,
 				71DE300C2C2C2ABA002615D1 /* UserRepo.json */,
@@ -353,6 +356,7 @@
 				71DE300E2C2C2ABA002615D1 /* UserInfo.json in Resources */,
 				71DE30102C2C2ABA002615D1 /* UserRepo.json in Resources */,
 				71DE30152C2C3354002615D1 /* APIError.json in Resources */,
+				713563542C2D33C900F5FC90 /* UserSearch.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
