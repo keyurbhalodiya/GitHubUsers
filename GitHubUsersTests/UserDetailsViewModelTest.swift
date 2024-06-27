@@ -15,10 +15,10 @@ final class UserDetailsViewModelTest: AsyncSpec {
   override class func spec() {
     var viewModel: UserDetailsViewModel!
     var mockDataProvider: MockUserDetailsViewDataProvider!
+    
     beforeEach {
       mockDataProvider = MockUserDetailsViewDataProvider()
     }
-    
     
     describe("load UserInfo and Repo on first launch") {
       context("fetchUserInfo and loadRepo success") {
@@ -102,6 +102,17 @@ final class UserDetailsViewModelTest: AsyncSpec {
           mockDataProvider.errorToReturn = .unknown
           await expect(viewModel.repos.count).toEventually(equal(5))
         }
+      }
+    }
+    
+    describe("lastRepoId") {
+      beforeEach {
+        mockDataProvider.responseToReturnRepos = Helper.loadLocalTestDataWithoutParsing("UserRepo", type: [UserRepositories].self)
+        viewModel = UserDetailsViewModel(loginUsername: "mojombo", dataProvider: mockDataProvider)
+      }
+      
+      it("should return corret value") {
+        await expect(viewModel.lastRepoId).toEventually(equal(444244))
       }
     }
   }

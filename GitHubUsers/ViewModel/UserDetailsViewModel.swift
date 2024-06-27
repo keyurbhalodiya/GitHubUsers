@@ -25,9 +25,14 @@ final class UserDetailsViewModel: UserInfoViewModel {
   private var cancellables = Set<AnyCancellable>()
   private var page: Int = 0
   
+  // MARK: UserDetailsViewState
   @Published var userInfo: UserInfo?
   @Published var repos: [UserRepositories] = []
   @Published var isLoadingRepos: Bool = false
+  var lastRepoId: Int? {
+    guard !repos.isEmpty else { return nil }
+    return repos.last?.id
+  }
   
   init(loginUsername: String, dataProvider: UserDetailsViewDataProviding) {
     self.loginUsername = loginUsername
@@ -35,11 +40,6 @@ final class UserDetailsViewModel: UserInfoViewModel {
     subscribeForUserDetailsAndRepos()
     fetchUserInfo()
     loadGitRepos()
-  }
-  
-  var lastRepoId: Int? { 
-    guard !repos.isEmpty else { return nil }
-    return repos.last?.id
   }
   
   private func fetchUserInfo() {
@@ -63,7 +63,11 @@ final class UserDetailsViewModel: UserInfoViewModel {
       }
       .store(in: &cancellables)
   }
-    
+}
+
+// MARK: UserDetailsViewListner
+
+extension UserDetailsViewModel {
   func loadGitRepos() {
     guard !isLoadingRepos, !dataProvider.hasLoadedAllRepos else { return }
     self.isLoadingRepos = true

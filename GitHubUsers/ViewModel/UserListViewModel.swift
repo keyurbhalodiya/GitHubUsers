@@ -80,6 +80,7 @@ final class UserListViewModel: UsersListViewModel {
 }
 
 // MARK: UserListViewListner
+
 extension UserListViewModel {
   
   func loadGitHubUsers() {
