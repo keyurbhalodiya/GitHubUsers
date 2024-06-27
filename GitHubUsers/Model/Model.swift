@@ -57,3 +57,16 @@ struct UserRepositories: Codable, Hashable {
     case starCount = "stargazers_count"
   }
 }
+
+// MARK: - UsersSearch
+struct UsersSearch: Codable {
+  let totalCount: Int?
+  let incompleteResults: Bool?
+  let users: [User]?
+  
+  enum CodingKeys: String, CodingKey {
+    case totalCount = "total_count"
+    case incompleteResults = "incomplete_results"
+    case users = "items"
+  }
+}

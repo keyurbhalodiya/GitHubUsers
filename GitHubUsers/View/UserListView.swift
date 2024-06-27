@@ -17,6 +17,8 @@ protocol UserListViewState: ObservableObject {
 
 protocol UserListViewListner {
   func loadGitHubUsers()
+  func searchUsers(with name: String)
+  func dismissSearchUsers()
 }
 
 typealias UsersListViewModel = UserListViewState & UserListViewListner
@@ -24,6 +26,7 @@ typealias UsersListViewModel = UserListViewState & UserListViewListner
 struct UserListView<ViewModel: UsersListViewModel>: View {
   
   @StateObject private var viewModel: ViewModel
+  @State private var searchText = ""
 
   let didClickUser = PassthroughSubject<User, Never>()
 
@@ -35,6 +38,14 @@ struct UserListView<ViewModel: UsersListViewModel>: View {
     rowContent
     .listStyle(.plain)
     .navigationTitle("GitHub Users")
+    .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
+    .onChange(of: searchText) { newValue in
+      guard newValue.count > 0 else {
+        viewModel.dismissSearchUsers()
+        return
+      }
+      viewModel.searchUsers(with: newValue)
+    }
     .hudOverlay(viewModel.isLoading)
   }
   
@@ -74,6 +85,8 @@ private final class UserListViewModelMock: UsersListViewModel {
     User(login: "User 2", id: 2, avatarURL: "https://placehold.co/75x75/png")
   ]
   func loadGitHubUsers() { }
+  func searchUsers(with name: String) { }
+  func dismissSearchUsers() { }
 }
 #Preview {
   UserListView(viewModel: UserListViewModelMock())
