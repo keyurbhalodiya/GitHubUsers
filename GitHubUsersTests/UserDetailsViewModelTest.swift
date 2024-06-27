@@ -26,6 +26,7 @@ final class UserDetailsViewModelTest: AsyncSpec {
           mockDataProvider.responseToReturnUserInfo = Helper.loadLocalTestDataWithoutParsing("UserInfo", type: UserInfo.self)
           mockDataProvider.responseToReturnRepos = Helper.loadLocalTestDataWithoutParsing("UserRepo", type: [UserRepositories].self)
           viewModel = UserDetailsViewModel(loginUsername: "mojombo", dataProvider: mockDataProvider)
+          viewModel.loadGitRepos()
         }
         
         it("should return correct value and repo count") {
@@ -44,6 +45,7 @@ final class UserDetailsViewModelTest: AsyncSpec {
           mockDataProvider.responseToReturnRepos = Helper.loadLocalTestDataWithoutParsing("UserRepo", type: [UserRepositories].self)
           mockDataProvider.errorToReturn = .unknown
           viewModel = UserDetailsViewModel(loginUsername: "mojombo", dataProvider: mockDataProvider)
+          viewModel.loadGitRepos()
         }
         
         it("should return nil for user info") {
@@ -62,6 +64,7 @@ final class UserDetailsViewModelTest: AsyncSpec {
           mockDataProvider.responseToReturnRepos = Helper.loadLocalTestDataWithoutParsing("APIError", type: [UserRepositories].self)
           mockDataProvider.errorToReturn = .unknown
           viewModel = UserDetailsViewModel(loginUsername: "mojombo", dataProvider: mockDataProvider)
+          viewModel.loadGitRepos()
         }
         
         it("should return repos count 0") {
@@ -79,6 +82,7 @@ final class UserDetailsViewModelTest: AsyncSpec {
         beforeEach {
           mockDataProvider.responseToReturnRepos = Helper.loadLocalTestDataWithoutParsing("UserRepo", type: [UserRepositories].self)
           viewModel = UserDetailsViewModel(loginUsername: "mojombo", dataProvider: mockDataProvider)
+          viewModel.loadGitRepos()
         }
         
         it("should return correct users count 10 eventually") {
@@ -93,6 +97,7 @@ final class UserDetailsViewModelTest: AsyncSpec {
         beforeEach {
           mockDataProvider.responseToReturnRepos = Helper.loadLocalTestDataWithoutParsing("UserRepo", type: [UserRepositories].self)
           viewModel = UserDetailsViewModel(loginUsername: "mojombo", dataProvider: mockDataProvider)
+          viewModel.loadGitRepos()
         }
         
         it("should return users count 5 eventually") {
@@ -100,6 +105,7 @@ final class UserDetailsViewModelTest: AsyncSpec {
           
           mockDataProvider.responseToReturnRepos = Helper.loadLocalTestDataWithoutParsing("APIError", type: [UserRepositories].self)
           mockDataProvider.errorToReturn = .unknown
+          viewModel.loadGitRepos()
           await expect(viewModel.repos.count).toEventually(equal(5))
         }
       }
@@ -109,6 +115,7 @@ final class UserDetailsViewModelTest: AsyncSpec {
       beforeEach {
         mockDataProvider.responseToReturnRepos = Helper.loadLocalTestDataWithoutParsing("UserRepo", type: [UserRepositories].self)
         viewModel = UserDetailsViewModel(loginUsername: "mojombo", dataProvider: mockDataProvider)
+        viewModel.loadGitRepos()
       }
       
       it("should return corret value") {

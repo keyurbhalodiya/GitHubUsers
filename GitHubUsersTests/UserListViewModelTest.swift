@@ -24,6 +24,7 @@ final class UserListViewModelTest: AsyncSpec {
         beforeEach {
           mockDataProvider.responseToReturn = Helper.loadLocalTestDataWithoutParsing("UserList", type: [User].self)
           viewModel = UserListViewModel(dataProvider: mockDataProvider)
+          viewModel.loadGitHubUsers()
         }
         
         it("should return correct users count") {
@@ -36,6 +37,7 @@ final class UserListViewModelTest: AsyncSpec {
           mockDataProvider.responseToReturn = Helper.loadLocalTestDataWithoutParsing("APIError", type: [User].self)
           mockDataProvider.errorToReturn = .unknown
           viewModel = UserListViewModel(dataProvider: mockDataProvider)
+          viewModel.loadGitHubUsers()
         }
         
         it("should return users count 0") {
@@ -48,6 +50,7 @@ final class UserListViewModelTest: AsyncSpec {
       beforeEach {
         mockDataProvider.responseToReturn = Helper.loadLocalTestDataWithoutParsing("UserList", type: [User].self)
         viewModel = UserListViewModel(dataProvider: mockDataProvider)
+        viewModel.loadGitHubUsers()
       }
       
       context("loadGitHubUsers success") {
@@ -74,6 +77,7 @@ final class UserListViewModelTest: AsyncSpec {
       beforeEach {
         mockDataProvider.responseToReturn = Helper.loadLocalTestDataWithoutParsing("UserList", type: [User].self)
         viewModel = UserListViewModel(dataProvider: mockDataProvider)
+        viewModel.loadGitHubUsers()
       }
       
       context("searchUsers success") {
@@ -114,6 +118,7 @@ final class UserListViewModelTest: AsyncSpec {
       beforeEach {
         mockDataProvider.responseToReturn = Helper.loadLocalTestDataWithoutParsing("UserList", type: [User].self)
         viewModel = UserListViewModel(dataProvider: mockDataProvider)
+        viewModel.loadGitHubUsers()
       }
       it("should return users count same as initial value") {
         await expect(viewModel.users.count).toEventually(equal(5))
@@ -131,6 +136,7 @@ final class UserListViewModelTest: AsyncSpec {
       beforeEach {
         mockDataProvider.responseToReturn = Helper.loadLocalTestDataWithoutParsing("UserList", type: [User].self)
         viewModel = UserListViewModel(dataProvider: mockDataProvider)
+        viewModel.loadGitHubUsers()
       }
       it("should return correct value") {
         await expect(viewModel.lastUserId).toEventually(equal(54859))
