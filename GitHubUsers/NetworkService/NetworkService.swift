@@ -28,7 +28,7 @@ extension NetworkError: LocalizedError {
 }
 
 private enum Constant {
-  static let token = "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"
+  static let token = "" // TODO: Add token here
   static let baseUrl = "https://api.github.com/"
 }
 
@@ -55,7 +55,9 @@ final class NetworkService {
       
       var request = URLRequest(url: componentsUrl)
       request.httpMethod = "GET"
-      request.addValue("Bearer \(Constant.token)", forHTTPHeaderField: "Authorization")
+      if Constant.token.count > 0 {
+        request.addValue("Bearer \(Constant.token)", forHTTPHeaderField: "Authorization")
+      }
       URLSession.shared.dataTaskPublisher(for: request)
         .tryMap { (data, response) -> Data in  // -> Operator
           guard let httpResponse = response as? HTTPURLResponse, 200...299 ~= httpResponse.statusCode else {
